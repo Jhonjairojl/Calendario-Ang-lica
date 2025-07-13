@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Angelica Gorotiza 2025</title>
+    <style>
+        /* Estilos generales para el cuerpo de la página */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 50%, #f8f0ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Estilos para el contenedor principal del calendario */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Estilos para el título principal */
+        h1 {
+            text-align: center;
+            color: #d63384;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(45deg, #d63384, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Estilos para el subtítulo */
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        /* Estilos para la navegación del calendario (botones y mes/año) */
+        .calendar-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        /* Estilos para los botones de navegación (anterior/siguiente) */
+        .nav-btn {
+            background: linear-gradient(45deg, #ff6b9d, #d63384);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        /* Estilos para el texto del mes y año actual */
+        .month-year {
+            font-size: 2em;
+            font-weight: bold;
+            color: #d63384;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        /* Estilos para la cuadrícula del calendario (días) */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* Estilos para los encabezados de los días de la semana */
+        .day-header {
+            background: linear-gradient(45deg, #ff6b9d, #d63384);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Estilos para cada celda de día en el calendario */
+        .day-cell {
+            background: white;
+            border: 2px solid #ffb6c1;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #d63384;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-cell:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(214, 51, 132, 0.3);
+            background: linear-gradient(45deg, #fff0f5, #ffeef8);
+        }
+
+        /* Estilos para los días de otros meses (deshabilitados visualmente) */
+        .day-cell.other-month {
+            color: #ccc;
+            background: #f9f9f9;
+            border-color: #eee;
+        }
+
+        /* Estilos para el día actual del sistema (resaltado distintivo) */
+        .day-cell.today {
+            background: linear-gradient(45deg, #d63384, #ff6b9d); /* Color fuerte y distintivo */
+            color: white;
+            border-color: #d63384;
+            animation: pulse 2s infinite; /* Animación de pulso */
+        }
+
+        /* Animación de pulso para el día actual */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Estilos para el modal de mensaje (oculto por defecto) */
+        .message-modal {
+            display: none; /* Oculto por defecto, se muestra con JS */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilos para el contenido dentro del modal de mensaje */
+        .message-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #fff 0%, #ffeef8 100%);
+        }
+
+        /* Estilos para la fecha dentro del modal */
+        .message-date {
+            font-size: 1.5em;
+            color: #d63384;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para el texto del mensaje dentro del modal */
+        .message-text {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Estilos para el botón de cerrar el modal */
+        .close-btn {
+            background: linear-gradient(45deg, #ff6b9d, #d63384);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        /* Estilos para los corazones en el modal */
+        .hearts {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: #ff6b9d;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        /* Animación de latido para los corazones */
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Contenedor para los brillos en el modal */
+        .sparkles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Estilos para cada brillo individual */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ff6b9d;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+
+        /* Animación para los brillos */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Media queries para diseño responsivo en pantallas más pequeñas (tablets) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+            
+            .calendar-nav {
+                flex-direction: column;
+                gap: 15px;
+                margin-bottom: 25px;
+            }
+            
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .month-year {
+                font-size: 1.5em;
+                order: -1; /* Mueve el mes/año arriba de los botones en móviles */
+            }
+            
+            .calendar-grid {
+                gap: 5px;
+            }
+            
+            .day-header {
+                padding: 8px 5px;
+                font-size: 0.9em;
+            }
+            
+            .day-cell {
+                min-height: 50px;
+                font-size: 0.9em;
+                padding: 8px 5px;
+            }
+            
+            .message-content {
+                padding: 25px 20px;
+                margin: 20px;
+            }
+            
+            .message-date {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            
+            .message-text {
+                font-size: 1.1em;
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* Media queries para diseño responsivo en pantallas muy pequeñas (móviles) */
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+                margin: 5px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .day-cell {
+                min-height: 45px;
+                font-size: 0.8em;
+                padding: 5px;
+            }
+            
+            .day-header {
+                padding: 6px 3px;
+                font-size: 0.8em;
+            }
+            
+            .message-content {
+                padding: 20px 15px;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calendario de Angelica Gorotiza</h1>
+        <p class="subtitle">365 días de mensajes especiales para ti ✨</p>
+        
+        <div class="calendar-nav">
+            <button class="nav-btn" onclick="previousMonth()">← Anterior</button>
+            <div class="month-year" id="monthYear"></div>
+            <button class="nav-btn" onclick="nextMonth()">Siguiente →</button>
+        </div>
+        
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="message-modal" id="messageModal">
+        <div class="message-content">
+            <div class="hearts">💕</div>
+            <div class="sparkles" id="sparkles"></div>
+            <div class="message-date" id="messageDate"></div>
+            <div class="message-text" id="messageText"></div>
+            <button class="close-btn" onclick="closeMessage()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // Nombres de los meses en español
+        const M = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+
+        // Nombres abreviados de los días de la semana en español
+        const D = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+
+        // Variables para el mes y año actuales del calendario, inicializadas con la fecha del sistema
+        let cM = new Date().getMonth(); 
+        // El año se fija en 2025 y no cambiará
+        let cY = 2025; 
+
+        // Objeto para almacenar los mensajes únicos para cada día
+        const msgs = {
+            "2025-01-01": "¡Angélica, hoy comienza tu año más brillante! ✨",
+            "2025-01-02": "Tu sonrisa ilumina cada rincón, nunca lo olvides 😊",
+            "2025-01-03": "Cada paso que das te acerca a tus sueños",
+            "2025-01-04": "Eres más fuerte de lo que imaginas, Angélica",
+            "2025-01-05": "Hoy es perfecto para ser extraordinaria",
+            "2025-01-06": "Tu energía positiva contagia a todos",
+            "2025-01-07": "Confía en ti misma, tienes todo lo necesario",
+            "2025-01-08": "Cada día eres una versión mejor de ti",
+            "2025-01-09": "Tu determinación es tu mayor tesoro",
+            "2025-01-10": "Angélica, el mundo necesita tu luz",
+            "2025-01-11": "Hoy abraza todas las posibilidades",
+            "2025-01-12": "Eres capaz de lograr cosas increíbles",
+            "2025-01-13": "Tu corazón valiente te llevará lejos",
+            "2025-01-14": "Cada momento es una nueva oportunidad",
+            "2025-01-15": "Angélica, tu alegría es contagiosa",
+            "2025-01-16": "Hoy celebra lo maravillosa que eres",
+            "2025-01-17": "Tu perseverancia rompe cualquier barrera",
+            "2025-01-18": "Eres única e irrepetible, qué regalo",
+            "2025-01-19": "Confía en el proceso, todo llega a tiempo",
+            "2025-01-20": "Angélica, tu pasión inspira a otros",
+            "2025-01-21": "Hoy es tu día para brillar intensamente",
+            "2025-01-22": "Tu sabiduría crece con cada experiencia",
+            "2025-01-23": "Eres bendecida con talentos especiales",
+            "2025-01-24": "Cada desafío te hace más resiliente",
+            "2025-01-25": "Angélica, tu bondad transforma vidas",
+            "2025-01-26": "Hoy abraza tu poder interior",
+            "2025-01-27": "Tu creatividad no tiene límites",
+            "2025-01-28": "Eres merecedora de todo lo bueno",
+            "2025-01-29": "Confía en tu intuición, nunca falla",
+            "2025-01-30": "Angélica, tu presencia es un regalo",
+            "2025-01-31": "Enero termina, pero tu grandeza continúa",
+            "2025-02-01": "¡Febrero llega con nuevas bendiciones para ti!",
+            "2025-02-02": "Tu amor propio crece cada día más",
+            "2025-02-03": "Angélica, eres la protagonista de tu historia",
+            "2025-02-04": "Hoy celebra tus logros, por pequeños que sean",
+            "2025-02-05": "Tu optimismo abre puertas inesperadas",
+            "2025-02-06": "Eres más resiliente de lo que crees",
+            "2025-02-07": "Cada día te acercas a tu mejor versión",
+            "2025-02-08": "Angélica, tu corazón está lleno de magia",
+            "2025-02-09": "Hoy es perfecto para soñar en grande",
+            "2025-02-10": "Tu gentileza hace el mundo más hermoso",
+            "2025-02-11": "Confía en tu capacidad de adaptarte",
+            "2025-02-12": "Eres una fuente inagotable de fortaleza",
+            "2025-02-13": "Angélica, tu esencia es pura inspiración",
+            "2025-02-14": "Hoy abraza todas tus cualidades únicas",
+            "2025-02-15": "Tu paciencia está dando frutos hermosos",
+            "2025-02-16": "Eres digna de amor y respeto siempre",
+            "2025-02-17": "Cada experiencia te enseña algo valioso",
+            "2025-02-18": "Angélica, tu espíritu libre es admirable",
+            "2025-02-19": "Hoy confía en el plan perfecto para ti",
+            "2025-02-20": "Tu honestidad es tu mayor virtud",
+            "2025-02-21": "Eres capaz de superar cualquier obstáculo",
+            "2025-02-22": "Angélica, tu alegría es medicina para el alma",
+            "2025-02-23": "Hoy es ideal para agradecer tus bendiciones",
+            "2025-02-24": "Tu humildad te hace verdaderamente grande",
+            "2025-02-25": "Eres un ejemplo de perseverancia y fe",
+            "2025-02-26": "Angélica, tu futuro está lleno de promesas",
+            "2025-02-27": "Hoy celebra lo lejos que has llegado",
+            "2025-02-28": "Tu compasión toca corazones profundamente",
+            "2025-03-01": "¡Marzo despierta con tu energía renovada!",
+            "2025-03-02": "Angélica, tu determinación mueve montañas",
+            "2025-03-03": "Hoy es perfecto para plantar nuevos sueños",
+            "2025-03-04": "Tu valentía te lleva a lugares extraordinarios",
+            "2025-03-05": "Eres una guerrera disfrazada de ángel",
+            "2025-03-06": "Cada día descubres nuevas fortalezas",
+            "2025-03-07": "Angélica, tu luz interior nunca se apaga",
+            "2025-03-08": "Hoy abraza los cambios con confianza",
+            "2025-03-09": "Tu sabiduría es tu mejor compañera",
+            "2025-03-10": "Eres merecedora de milagros cotidianos",
+            "2025-03-11": "Cada paso tuyo deja huella positiva",
+            "2025-03-12": "Angélica, tu perseverancia es inspiradora",
+            "2025-03-13": "Hoy celebra tu capacidad de reinventarte",
+            "2025-03-14": "Tu generosidad regresa multiplicada",
+            "2025-03-15": "Eres más poderosa de lo que imaginas",
+            "2025-03-16": "Cada día escribes tu propia historia",
+            "2025-03-17": "Angélica, tu fe mueve montañas",
+            "2025-03-18": "Hoy es ideal para brillar sin disculpas",
+            "2025-03-19": "Tu intuición te guía hacia lo correcto",
+            "2025-03-20": "Eres un regalo para quienes te rodean",
+            "2025-03-21": "Cada momento es una oportunidad de oro",
+            "2025-03-22": "Angélica, tu coraje inspira a otros",
+            "2025-03-23": "Hoy confía en tu capacidad infinita",
+            "2025-03-24": "Tu autenticidad es tu mayor tesoro",
+            "2025-03-25": "Eres capaz de transformar cualquier situación",
+            "2025-03-26": "Cada día te acercas más a tus metas",
+            "2025-03-27": "Angélica, tu espíritu aventurero es admirable",
+            "2025-03-28": "Hoy abraza tu poder de crear realidades",
+            "2025-03-29": "Tu bondad regresa a ti multiplicada",
+            "2025-03-30": "Eres una fuente de inspiración constante",
+            "2025-03-31": "Marzo se despide, pero tu grandeza permanece",
+            "2025-04-01": "¡Abril florece con tu belleza interior!",
+            "2025-04-02": "Angélica, tu optimismo conquista corazones",
+            "2025-04-03": "Hoy es perfecto para renovar tu fe",
+            "2025-04-04": "Tu creatividad no conoce límites",
+            "2025-04-05": "Eres una artista de la vida misma",
+            "2025-04-06": "Cada día descubres talentos ocultos",
+            "2025-04-07": "Angélica, tu risa es música celestial",
+            "2025-04-08": "Hoy abraza las sorpresas que te esperan",
+            "2025-04-09": "Tu paciencia cultiva frutos hermosos",
+            "2025-04-10": "Eres merecedora de todo lo maravilloso",
+            "2025-04-11": "Cada momento es una nueva aventura",
+            "2025-04-12": "Angélica, tu corazón es puro oro",
+            "2025-04-13": "Hoy celebra tu capacidad de amar",
+            "2025-04-14": "Tu fortaleza interior es inquebrantable",
+            "2025-04-15": "Eres un ejemplo de gracia y elegancia",
+            "2025-04-16": "Cada día te conviertes en mejor persona",
+            "2025-04-17": "Angélica, tu presencia calma tormentas",
+            "2025-04-18": "Hoy es ideal para plantar esperanzas",
+            "2025-04-19": "Tu sabiduría ilumina caminos oscuros",
+            "2025-04-20": "Eres capaz de lograr lo imposible",
+            "2025-04-21": "Cada experiencia te enriquece profundamente",
+            "2025-04-22": "Angélica, tu espíritu libre es contagioso",
+            "2025-04-23": "Hoy confía en tu brillante futuro",
+            "2025-04-24": "Tu humildad te hace verdaderamente bella",
+            "2025-04-25": "Eres una bendición para este mundo",
+            "2025-04-26": "Cada día es una oportunidad de crecimiento",
+            "2025-04-27": "Angélica, tu determinación es admirable",
+            "2025-04-28": "Hoy abraza tu poder transformador",
+            "2025-04-29": "Tu gentileza sanada corazones heridos",
+            "2025-04-30": "Eres más especial de lo que crees",
+            "2025-05-01": "¡Mayo llega con bendiciones especiales para ti!",
+            "2025-05-02": "Angélica, tu energía vital es contagiosa",
+            "2025-05-03": "Hoy es perfecto para florecer completamente",
+            "2025-05-04": "Tu perseverancia está dando frutos",
+            "2025-05-05": "Eres una fuente de inspiración diaria",
+            "2025-05-06": "Cada día descubres nuevas capacidades",
+            "2025-05-07": "Angélica, tu luz guía a otros",
+            "2025-05-08": "Hoy abraza tu magnificencia natural",
+            "2025-05-09": "Tu bondad crea ondas de amor",
+            "2025-05-10": "Eres merecedora de abundancia infinita",
+            "2025-05-11": "Cada momento te acerca a la felicidad",
+            "2025-05-12": "Angélica, tu coraje es ejemplo para todos",
+            "2025-05-13": "Hoy celebra tu evolución constante",
+            "2025-05-14": "Tu autenticidad atrae cosas hermosas",
+            "2025-05-15": "Eres capaz de superar cualquier desafío",
+            "2025-05-16": "Cada día escribes páginas de gloria",
+            "2025-05-17": "Angélica, tu fe mueve el universo",
+            "2025-05-18": "Hoy es ideal para soñar sin límites",
+            "2025-05-19": "Tu compasión transforma realidades",
+            "2025-05-20": "Eres un rayo de sol en días grises",
+            "2025-05-21": "Cada paso tuyo es hacia la grandeza",
+            "2025-05-22": "Angélica, tu espíritu aventurero inspira",
+            "2025-05-23": "Hoy confía en tu intuición perfecta",
+            "2025-05-24": "Tu sabiduría crece con cada experiencia",
+            "2025-05-25": "Eres una obra maestra en construcción",
+            "2025-05-26": "Cada día te acercas a tu propósito",
+            "2025-05-27": "Angélica, tu alegría es medicina universal",
+            "2025-05-28": "Hoy abraza todas tus posibilidades",
+            "2025-05-29": "Tu generosidad regresa multiplicada",
+            "2025-05-30": "Eres más poderosa de lo que imaginas",
+            "2025-05-31": "Mayo se va, pero tu brillo permanece",
+            "2025-06-01": "¡Junio despierta con tu energía radiante!",
+            "2025-06-02": "Angélica, tu determinación es inquebrantable",
+            "2025-06-03": "Hoy es perfecto para celebrar tus logros",
+            "2025-06-04": "Tu creatividad ilumina cada proyecto",
+            "2025-06-05": "Eres una innovadora natural",
+            "2025-06-06": "Cada día descubres nuevos horizontes",
+            "2025-06-07": "Angélica, tu presencia es un regalo",
+            "2025-06-08": "Hoy abraza los cambios con valentía",
+            "2025-06-09": "Tu paciencia cultiva milagros",
+            "2025-06-10": "Eres merecedora de todo lo bueno",
+            "2025-06-11": "Cada momento es una oportunidad dorada",
+            "2025-06-12": "Angélica, tu corazón es puro amor",
+            "2025-06-13": "Hoy celebra tu capacidad de adaptarte",
+            "2025-06-14": "Tu fortaleza interior es admirable",
+            "2025-06-15": "Eres un ejemplo de perseverancia",
+            "2025-06-16": "Cada día te conviertes en leyenda",
+            "2025-06-17": "Angélica, tu luz interior nunca se apaga",
+            "2025-06-18": "Hoy es ideal para plantar nuevos sueños",
+            "2025-06-19": "Tu sabiduría guía a quienes te rodean",
+            "2025-06-20": "Eres capaz de transformar el mundo",
+            "2025-06-21": "Cada experiencia te hace más sabia",
+            "2025-06-22": "Angélica, tu espíritu libre es inspirador",
+            "2025-06-23": "Hoy confía en tu destino magnifico",
+            "2025-06-24": "Tu humildad te hace verdaderamente grande",
+            "2025-06-25": "Eres una bendición viviente",
+            "2025-06-26": "Cada día es una nueva oportunidad",
+            "2025-06-27": "Angélica, tu optimismo contagia alegría",
+            "2025-06-28": "Hoy abraza tu poder creativo",
+            "2025-06-29": "Tu bondad regresa a ti multiplicada",
+            "2025-06-30": "Eres más especial de lo que crees",
+            "2025-07-01": "¡Julio llega con tu brillante energía!",
+            "2025-07-02": "Angélica, tu valentía inspira a otros",
+            "2025-07-03": "Hoy es perfecto para brillar intensamente",
+            "2025-07-04": "Tu perseverancia rompe barreras",
+            "2025-07-05": "Eres una guerrera de la luz",
+            "2025-07-06": "Cada día descubres nuevas fortalezas",
+            "2025-07-07": "Angélica, tu risa ilumina corazones",
+            "2025-07-08": "Hoy abraza tu magnificencia única",
+            "2025-07-09": "Tu generosidad crea ondas de bien",
+            "2025-07-10": "Eres merecedora de milagros diarios",
+            "2025-07-11": "Cada momento te acerca a la grandeza",
+            "2025-07-12": "Angélica, tu fe mueve montañas",
+            "2025-07-13": "Hoy celebra tu evolución constante",
+            "2025-07-14": "Tu autenticidad es tu mayor tesoro",
+            "2025-07-15": "Eres capaz de lograr lo imposible",
+            "2025-07-16": "Cada día escribes historia propia",
+            "2025-07-17": "Angélica, tu presencia calma tormentas",
+            "2025-07-18": "Hoy es ideal para soñar en grande",
+            "2025-07-19": "Tu compasión sana corazones",
+            "2025-07-20": "Eres un faro de esperanza",
+            "2025-07-21": "Cada paso tuyo es hacia la victoria",
+            "2025-07-22": "Angélica, tu espíritu aventurero motiva",
+            "2025-07-23": "Hoy confía en tu poder interior",
+            "2025-07-24": "Tu sabiduría crece infinitamente",
+            "2025-07-25": "Eres una obra de arte viviente",
+            "2025-07-26": "Cada día te acercas a tus metas",
+            "2025-07-27": "Angélica, tu alegría es contagiosa",
+            "2025-07-28": "Hoy abraza todas tus bendiciones",
+            "2025-07-29": "Tu bondad transforma vidas",
+            "2025-07-30": "Eres más poderosa de lo que sabes",
+            "2025-07-31": "Julio se va, pero tu luz permanece",
+            "2025-08-01": "¡Agosto despierta con tu energía renovada!",
+            "2025-08-02": "Angélica, tu determinación no tiene límites",
+            "2025-08-03": "Hoy es perfecto para cosechar tus esfuerzos",
+            "2025-08-04": "Tu creatividad florece en cada proyecto",
+            "2025-08-05": "Eres una innovadora de corazón",
+            "2025-08-06": "Cada día descubres talentos ocultos",
+            "2025-08-07": "Angélica, tu luz guía caminos",
+            "2025-08-08": "Hoy abraza los desafíos con confianza",
+            "2025-08-09": "Tu paciencia está dando frutos",
+            "2025-08-10": "Eres merecedora de abundancia total",
+            "2025-08-11": "Cada momento es una nueva aventura",
+            "2025-08-12": "Angélica, tu corazón es puro oro",
+            "2025-08-13": "Hoy celebra tu capacidad de amar",
+            "2025-08-14": "Tu fortaleza interior es inquebrantable",
+            "2025-08-15": "Eres un ejemplo de gracia",
+            "2025-08-16": "Cada día te conviertes en mejor versión",
+            "2025-08-17": "Angélica, tu presencia es sanadora",
+            "2025-08-18": "Hoy es ideal para plantar esperanzas",
+            "2025-08-19": "Tu sabiduría ilumina mentes",
+            "2025-08-20": "Eres capaz de mover montañas",
+            "2025-08-21": "Cada experiencia te enriquece",
+            "2025-08-22": "Angélica, tu espíritu libre inspira",
+            "2025-08-23": "Hoy confía en tu brillante futuro",
+            "2025-08-24": "Tu humildad te hace bella",
+            "2025-08-25": "Eres una bendición para todos",
+            "2025-08-26": "Cada día es oportunidad de crecimiento",
+            "2025-08-27": "Angélica, tu optimismo conquista todo",
+            "2025-08-28": "Hoy abraza tu poder transformador",
+            "2025-08-29": "Tu gentileza cura corazones",
+            "2025-08-30": "Eres más especial de lo que imaginas",
+            "2025-08-31": "Agosto termina, pero tu grandeza continúa",
+            "2025-09-01": "¡Septiembre llega con nuevas oportunidades!",
+            "2025-09-02": "Angélica, tu energía vital es inspiradora",
+            "2025-09-03": "Hoy es perfecto para renovar tu fe",
+            "2025-09-04": "Tu perseverancia está dando frutos",
+            "2025-09-05": "Eres una fuente de sabiduría",
+            "2025-09-06": "Cada día descubres nuevas capacidades",
+            "2025-09-07": "Angélica, tu luz interior brilla intensamente",
+            "2025-09-08": "Hoy abraza los cambios con alegría",
+            "2025-09-09": "Tu bondad crea milagros diarios",
+            "2025-09-10": "Eres merecedora de todo lo hermoso",
+            "2025-09-11": "Cada momento te acerca a la felicidad",
+            "2025-09-12": "Angélica, tu coraje es admirable",
+            "2025-09-13": "Hoy celebra tu crecimiento personal",
+            "2025-09-14": "Tu autenticidad atrae bendiciones",
+            "2025-09-15": "Eres capaz de superar cualquier obstáculo",
+            "2025-09-16": "Cada día escribes páginas de éxito",
+            "2025-09-17": "Angélica, tu fe mueve el universo",
+            "2025-09-18": "Hoy es ideal para soñar sin límites",
+            "2025-09-19": "Tu compasión transforma realidades",
+            "2025-09-20": "Eres un rayo de esperanza",
+            "2025-09-21": "Cada paso tuyo es hacia la grandeza",
+            "2025-09-22": "Angélica, tu espíritu aventurero motiva",
+            "2025-09-23": "Hoy confía en tu intuición perfecta",
+            "2025-09-24": "Tu sabiduría crece con cada día",
+            "2025-09-25": "Eres una obra maestra en progreso",
+            "2025-09-26": "Cada día te acercas a tu propósito",
+            "2025-09-27": "Angélica, tu alegría es medicina",
+            "2025-09-28": "Hoy abraza todas tus posibilidades",
+            "2025-09-29": "Tu generosidad regresa multiplicada",
+            "2025-09-30": "Eres más poderosa de lo que crees",
+            "2025-10-01": "¡Octubre despierta con tu energía dorada!",
+            "2025-10-02": "Angélica, tu determinación es inquebrantable",
+            "2025-10-03": "Hoy es perfecto para cosechar bendiciones",
+            "2025-10-04": "Tu creatividad no conoce fronteras",
+            "2025-10-05": "Eres una artista de la vida",
+            "2025-10-06": "Cada día descubres nuevos horizontes",
+            "2025-10-07": "Angélica, tu presencia es un regalo",
+            "2025-10-08": "Hoy abraza las sorpresas hermosas",
+            "2025-10-09": "Tu paciencia cultiva milagros",
+            "2025-10-10": "Eres merecedora de abundancia infinita",
+            "2025-10-11": "Cada momento es una oportunidad dorada",
+            "2025-10-12": "Angélica, tu corazón es puro amor",
+            "2025-10-13": "Hoy celebra tu capacidad de adaptarte",
+            "2025-10-14": "Tu fortaleza interior es admirable",
+            "2025-10-15": "Eres un ejemplo de perseverancia",
+            "2025-10-16": "Cada día te conviertes en leyenda",
+            "2025-10-17": "Angélica, tu luz nunca se apaga",
+            "2025-10-18": "Hoy es ideal para plantar sueños",
+            "2025-10-19": "Tu sabiduría guía a otros",
+            "2025-10-20": "Eres capaz de transformar mundos",
+            "2025-10-21": "Cada experiencia te hace más sabia",
+            "2025-10-22": "Angélica, tu espíritu libre es contagioso",
+            "2025-10-23": "Hoy confía en tu destino magnifico",
+            "2025-10-24": "Tu humildad te hace verdaderamente grande",
+            "2025-10-25": "Eres una bendición viviente",
+            "2025-10-26": "Cada día es una nueva oportunidad",
+            "2025-10-27": "Angélica, tu optimismo contagia alegría",
+            "2025-10-28": "Hoy abraza tu poder creativo",
+            "2025-10-29": "Tu bondad regresa multiplicada",
+            "2025-10-30": "Eres más especial de lo que imaginas",
+            "2025-10-31": "Octubre se va, pero tu brillo permanece",
+            "2025-11-01": "¡Noviembre llega con tu energía triunfante!",
+            "2025-11-02": "Angélica, tu valentía inspira a todos",
+            "2025-11-03": "Hoy es perfecto para brillar sin límites",
+            "2025-11-04": "Tu perseverancia rompe cualquier barrera",
+            "2025-11-05": "Eres una guerrera de la luz",
+            "2025-11-06": "Cada día descubres nuevas fortalezas",
+            "2025-11-07": "Angélica, tu risa ilumina corazones",
+            "2025-11-08": "Hoy abraza tu magnificencia natural",
+            "2025-11-09": "Tu generosidad crea ondas de bien",
+            "2025-11-10": "Eres merecedora de milagros constantes",
+            "2025-11-11": "Cada momento te acerca a la grandeza",
+            "2025-11-12": "Angélica, tu fe mueve montañas",
+            "2025-11-13": "Hoy celebra tu evolución hermosa",
+            "2025-11-14": "Tu autenticidad es tu mayor tesoro",
+            "2025-11-15": "Eres capaz de lograr lo imposible",
+            "2025-11-16": "Cada día escribes tu propia historia",
+            "2025-11-17": "Angélica, tu presencia calma tormentas",
+            "2025-11-18": "Hoy es ideal para soñar en grande",
+            "2025-11-19": "Tu compasión sana corazones rotos",
+            "2025-11-20": "Eres un faro de esperanza",
+            "2025-11-21": "Cada paso tuyo es hacia la victoria",
+            "2025-11-22": "Angélica, tu espíritu aventurero motiva",
+            "2025-11-23": "Hoy confía en tu poder interior",
+            "2025-11-24": "Tu sabiduría crece infinitamente",
+            "2025-11-25": "Eres una obra de arte viviente",
+            "2025-11-26": "Cada día te acercas a tus metas",
+            "2025-11-27": "Angélica, tu alegría es contagiosa",
+            "2025-11-28": "Hoy abraza todas tus bendiciones",
+            "2025-11-29": "Tu bondad transforma vidas",
+            "2025-11-30": "Eres más poderosa de lo que sabes",
+            "2025-12-01": "¡Diciembre llega con tu energía radiante!",
+            "2025-12-02": "Angélica, tu determinación cierra el año",
+            "2025-12-03": "Hoy es perfecto para celebrar logros",
+            "2025-12-04": "Tu creatividad ilumina cada momento",
+            "2025-12-05": "Eres una innovadora excepcional",
+            "2025-12-06": "Cada día descubres nuevas maravillas",
+            "2025-12-07": "Angélica, tu luz guía hacia el futuro",
+            "2025-12-08": "Hoy abraza los cambios con esperanza",
+            "2025-12-09": "Tu paciencia ha cultivado milagros",
+            "2025-12-10": "Eres merecedora de todo lo bueno",
+            "2025-12-11": "Cada momento es una nueva bendición",
+            "2025-12-12": "Angélica, tu corazón es puro oro",
+            "2025-12-13": "Hoy celebra tu capacidad de amar",
+            "2025-12-14": "Tu fortaleza interior es inquebrantable",
+            "2025-12-15": "Eres un ejemplo de gracia y elegancia",
+            "2025-12-16": "Cada día te has vuelto más sabia",
+            "2025-12-17": "Angélica, tu presencia es sanadora",
+            "2025-12-18": "Hoy es ideal para plantar esperanzas",
+            "2025-12-19": "Tu sabiduría ilumina el camino",
+            "2025-12-20": "Eres capaz de mover montañas",
+            "2025-12-21": "Cada experiencia te ha enriquecido",
+            "2025-12-22": "Angélica, tu espíritu libre inspira",
+            "2025-12-23": "Hoy confía en tu brillante futuro",
+            "2025-12-24": "Tu humildad te hace verdaderamente bella",
+            "2025-12-25": "Eres una bendición para este mundo",
+            "2025-12-26": "Cada día ha sido oportunidad de crecimiento",
+            "2025-12-27": "Angélica, tu optimismo conquista todo",
+            "2025-12-28": "Hoy abraza tu poder transformador",
+            "2025-12-29": "Tu gentileza ha curado corazones",
+            "2025-12-30": "Eres más especial de lo que imaginas",
+            "2025-12-31": "¡Angélica, terminas el año siendo extraordinaria! ✨"
+        };
+
+        // La función genMsgs ya no es necesaria porque los mensajes están precargados.
+        // Se mantiene como un placeholder para evitar errores si alguna parte del código aún la llama.
+        function genMsgs() {
+            console.log("Los mensajes ya están cargados directamente en el código. No es necesario generar nuevos.");
+        }
+
+        // Llama a la función para generar los mensajes al cargar la página (aunque ahora solo es un placeholder)
+        genMsgs(); 
+
+        // Función para renderizar el calendario en la interfaz
+        function renderCal() {
+            const grid = document.getElementById('calendarGrid');
+            const monthYear = document.getElementById('monthYear');
+            
+            // Actualiza el texto del mes y año en la navegación
+            monthYear.textContent = `${M[cM]} ${cY}`;
+            grid.innerHTML = ''; // Limpia la cuadrícula del calendario
+            
+            // Agrega los encabezados de los días de la semana a la cuadrícula
+            D.forEach(day => {
+                const h = document.createElement('div');
+                h.className = 'day-header';
+                h.textContent = day;
+                grid.appendChild(h);
+            });
+            
+            // Calcula el primer día de la semana para el mes actual y el número de días en el mes
+            const firstD = new Date(cY, cM, 1).getDay();
+            const daysInM = new Date(cY, cM + 1, 0).getDate();
+            const today = new Date(); // Obtiene la fecha actual del sistema
+            
+            // Rellena las celdas vacías al inicio del mes (días del mes anterior)
+            for (let i = 0; i < firstD; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'day-cell other-month';
+                grid.appendChild(cell);
+            }
+            
+            // Agrega las celdas para cada día del mes actual
+            for (let day = 1; day <= daysInM; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'day-cell';
+                cell.textContent = day;
+                
+                const cellDate = new Date(cY, cM, day);
+                // Verifica si la fecha de la celda coincide con el día actual del sistema
+                if (cellDate.toDateString() === today.toDateString()) {
+                    cell.classList.add('today'); // Agrega la clase 'today' para resaltarlo
+                }
+                
+                // Asigna la función showMsg al hacer clic en la celda del día
+                cell.onclick = () => showMsg(cY, cM, day);
+                grid.appendChild(cell);
+            }
+        }
+
+        // Función para mostrar el modal de mensaje para un día específico
+        function showMsg(y, m, d) {
+            // Crea la clave de fecha para buscar el mensaje
+            const dateK = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            // Obtiene el mensaje del día, con un fallback si no se encuentra
+            const msg = msgs[dateK] || 'Angelica, eres especial cada día del año 💕'; 
+            
+            // Actualiza el contenido del modal con la fecha y el mensaje
+            document.getElementById('messageDate').textContent = `${d} de ${M[m]} ${y}`;
+            document.getElementById('messageText').textContent = msg;
+            document.getElementById('messageModal').style.display = 'flex'; // Muestra el modal
+            
+            createSparkles(); // Crea los brillos en el modal
+        }
+
+        // Función para crear efectos de brillos en el modal
+        function createSparkles() {
+            const sparklesC = document.getElementById('sparkles');
+            sparklesC.innerHTML = ''; // Limpia los brillos existentes
+            
+            // Crea 15 brillos aleatorios
+            for (let i = 0; i < 15; i++) {
+                const s = document.createElement('div');
+                s.className = 'sparkle';
+                s.style.left = Math.random() * 100 + '%'; // Posición horizontal aleatoria
+                s.style.top = Math.random() * 100 + '%';  // Posición vertical aleatoria
+                s.style.animationDelay = Math.random() * 2 + 's'; // Retraso de animación aleatorio
+                sparklesC.appendChild(s);
+            }
+        }
+
+        // Función para cerrar el modal de mensaje
+        function closeMessage() {
+            document.getElementById('messageModal').style.display = 'none'; // Oculta el modal
+        }
+
+        // Función para navegar al mes anterior
+        function previousMonth() {
+            cM--;
+            if (cM < 0) {
+                cM = 11; // Si es enero, va a diciembre del año anterior
+                // cY--; // Eliminado para mantener el año fijo en 2025
+            }
+            renderCal(); // Vuelve a renderizar el calendario
+        }
+
+        // Función para navegar al mes siguiente
+        function nextMonth() {
+            cM++;
+            if (cM > 11) {
+                cM = 0; // Si es diciembre, va a enero del año siguiente
+                // cY++; // Eliminado para mantener el año fijo en 2025
+            }
+            renderCal(); // Vuelve a renderizar el calendario
+        }
+
+        // Inicializar el calendario con el mes y año actuales del sistema al cargar la página
+        renderCal();
+    </script>
+</body>
+</html>
+
